@@ -35,8 +35,14 @@ def process_data():
         json.dump(kpis, f)
 
     print("Generating Fraud By Type...")
-    fraud_by_type = df[df['isFraud'] == 1].groupby('type').size().reset_index(name='fraudCount')
-    total_by_type = df.groupby('type').size().reset_index(name='totalCount')
+    fraud_by_type = df[df['isFraud'] == 1].groupby('type').agg(
+        fraudCount=('isFraud', 'size'),
+        fraudAmount=('amount', 'sum')
+    ).reset_index()
+    total_by_type = df.groupby('type').agg(
+        totalCount=('type', 'size'),
+        totalAmount=('amount', 'sum')
+    ).reset_index()
     merged_type = pd.merge(total_by_type, fraud_by_type, on='type', how='left').fillna(0)
     merged_type['fraudRate'] = (merged_type['fraudCount'] / merged_type['totalCount']) * 100
     merged_type = merged_type.sort_values(by='fraudRate', ascending=False)
