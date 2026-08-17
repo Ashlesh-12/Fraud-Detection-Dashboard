@@ -1,32 +1,42 @@
-# React + TypeScript + Vite
+# 🛡️ FraudShield Web Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+### 🖥️ React + TypeScript + Vite Dashboard Frontend
 
-Currently, two official plugins are available:
+This directory contains the interactive Business Intelligence dashboard frontend for the **FraudShield** project. It is designed using Microsoft Power BI design guidelines (light theme tokens, clean grids, analytical graphs, and responsive slicers).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🚀 How to Run Locally
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+### 1. Pre-requisites
+Ensure you have ran the Pandas aggregation script at the root to compile raw data into optimized JSON schemas:
+```bash
+python process_data_for_ui.py
 ```
+This updates the models inside `public/data/`.
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### 2. Start the Development Server
+Navigate to this folder, install the node modules, and boot the Vite server:
+```bash
+npm install
+npm run dev
+```
+Open **`http://localhost:5173`** in your browser.
+
+### 3. Build for Production
+To bundle the frontend application assets for deployment:
+```bash
+npm run build
+```
+This builds static compiled HTML, CSS, and JS assets into the `dist/` directory.
+
+---
+
+## 🎨 Page Layouts & Components
+
+*   **Executive Overview** (`src/pages/ExecutiveOverview.tsx`): Main dashboard tab containing dynamic slicer selects, a 5-KPI header, key callout insights, Recharts transaction graphs, and simulated investigation drawers.
+*   **Fraud Patterns** (`src/pages/FraudPattern.tsx`): Focuses on transaction types comparison. Features interactive charts for cases, rates, values, and a comparative matrix table with conditional formatting.
+*   **Account Analysis** (`src/pages/AccountAnalysis.tsx`): Demonstrates simulated audit logs and pagination controls for reviewing illustrative high-risk account profiles.
+*   **Risk Matrix** (`src/pages/RiskMatrix.tsx`): Maps type + value combinations to academic risk ratings. Includes styling tags that highlight high-risk cells (e.g. CASH_OUT / Very High).
+*   **Risk Simulation** (`src/pages/Sandbox.tsx`): Sandbox simulator calculating rule-based risk percentages based on project weights.
+*   **Visual Styling** (`src/index.css`): Houses Light/Dark theme configuration variables, Power BI visual theme tokens, custom table styles, and page layouts.
